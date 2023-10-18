@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const brands = require('./brand.json');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
 require('dotenv').config()
@@ -26,9 +27,17 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const productCollection = client.db('productDb').collection('products')
+    const brandCollection = client.db('productDb').collection('brands')
+
+    
 
     app.get('/products',async(req,res)=>{
         const result = await productCollection.find().toArray();
+        res.send(result)
+    })
+
+    app.get('/brands',async(req,res)=>{
+        const result = await brandCollection.find().toArray();
         res.send(result)
     })
 
