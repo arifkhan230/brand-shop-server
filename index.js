@@ -28,6 +28,7 @@ async function run() {
     const productCollection = client.db('productDb').collection('products')
     const brandCollection = client.db('productDb').collection('brands')
     const cartCollection = client.db('productDb').collection('carts')
+    const reviewCollection = client.db('productDb').collection('userReview')
 
     
 
@@ -86,11 +87,34 @@ async function run() {
         res.send(result)
     })
 
+
     app.post('/carts',async(req,res) =>{
         const cartProduct = req.body;
         const result = await cartCollection.insertOne(cartProduct)
         res.send(result)
     })
+
+    app.get('/carts/:id',async(req,res)=>{
+        const id = req.params.id;
+        const query = {_id : id}
+        const result = await cartCollection.findOne(query)
+        console.log(id)
+        res.send(result)
+    })
+
+    app.delete('/carts/:id',async(req,res)=>{
+        const id = req.params.id;
+        const query = {_id : id}
+        const result = await cartCollection.deleteOne(query)
+        res.send(result)
+    })
+
+    app.get('/review',async(req,res)=>{
+        const result = await reviewCollection.find().toArray();
+        res.send(result)
+    })
+
+    
 
 
 
